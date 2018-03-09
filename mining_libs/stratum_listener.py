@@ -53,20 +53,20 @@ class MiningSubscription(Subscription):
                 subs.connection_ref().transport.loseConnection()
         
     @classmethod
-    def on_template(cls, job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, clean_jobs):
+    def on_template(cls, utxroot, stateroot, job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, clean_jobs):
         '''Push new job to subscribed clients'''
-        cls.last_broadcast = (job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, clean_jobs)
-        cls.emit(job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, clean_jobs)
+        cls.last_broadcast = (job_id, utxroot, stateroot, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, clean_jobs)
+        cls.emit(job_id, utxroot, stateroot, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, clean_jobs)
         
     def _finish_after_subscribe(self, result):
         '''Send new job to newly subscribed client'''
         try:        
-            (job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, _) = self.last_broadcast
+            (job_id, utxroot, stateroot, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, _) = self.last_broadcast
         except Exception:
             log.error("Template not ready yet")
             return result
         
-        self.emit_single(job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, True)
+        self.emit_single(job_id, utxroot, stateroot, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, True)
         return result
              
     def after_subscribe(self, *args):
