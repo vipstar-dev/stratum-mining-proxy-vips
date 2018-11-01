@@ -45,11 +45,9 @@ class Job(object):
         self.merkle_to_extranonce2 = {} # Relation between merkle_hash and extranonce2
 
     @classmethod
-    def build_from_broadcast(cls, hashutxoroot, hashstateroot, job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime):
+    def build_from_broadcast(cls, job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, hashutxoroot, hashstateroot):
         '''Build job object from Stratum server broadcast'''
         job = Job()
-        job.hashutxoroot = "".join(reversed([hashutxoroot[i:i+8] for i in range(0, len(hashutxoroot), 8)]))
-        job.hashstateroot = "".join(reversed([hashstateroot[i:i+8] for i in range(0, len(hashstateroot), 8)]))
         job.job_id = job_id
         job.prevhash = prevhash
         job.coinb1_bin = binascii.unhexlify(coinb1)
@@ -58,6 +56,8 @@ class Job(object):
         job.version = version
         job.nbits = nbits
         job.ntime_delta = int(ntime, 16) - int(time.time()) 
+        job.hashutxoroot = "".join(reversed([hashutxoroot[i:i+8] for i in range(0, len(hashutxoroot), 8)]))
+        job.hashstateroot = "".join(reversed([hashstateroot[i:i+8] for i in range(0, len(hashstateroot), 8)]))
         return job
 
     def increase_extranonce2(self):
