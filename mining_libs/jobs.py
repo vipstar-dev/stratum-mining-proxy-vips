@@ -82,7 +82,7 @@ class Job(object):
         r += binascii.hexlify(struct.pack(">I", nonce))
 #        r += '000000800000000000000000000000000000000000000000000000000000000000000000000000000000000080020000' # padding    
         r += self.hashutxoroot
-        r += self.haahstateroot
+        r += self.hashstateroot
         return r            
         
 class JobRegistry(object):   
