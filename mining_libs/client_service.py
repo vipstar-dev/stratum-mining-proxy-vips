@@ -61,10 +61,10 @@ class ClientMiningService(GenericEventHandler):
         
             # Broadcast to Stratum clients
             stratum_listener.MiningSubscription.on_template(
-                            hashutxoroot,hashstateroot,job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, clean_jobs)
+                            job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, hashutxoroot, hashstateroot, clean_jobs)
             
             # Broadcast to getwork clients
-            job = Job.build_from_broadcast(hashutxoroot,hashstateroot,job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime)
+            job = Job.build_from_broadcast(job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, hashutxoroot,hashstateroot)
             log.info("New job %s for prevhash %s, clean_jobs=%s" % \
                  (job.job_id, utils.format_hash(job.prevhash), clean_jobs))
 
