@@ -44,7 +44,7 @@ class ClientMiningService(GenericEventHandler):
         if method == 'mining.notify':
             '''Proxy just received information about new mining job'''
             
-            (hashutxoroot,hashstateroot,job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, clean_jobs) = params[:11]
+            (job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, hashutxoroot, hashstateroot, clean_jobs) = params[:11]
             #print len(str(params)), len(merkle_branch)
             
             '''
@@ -64,7 +64,7 @@ class ClientMiningService(GenericEventHandler):
                             job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, hashutxoroot, hashstateroot, clean_jobs)
             
             # Broadcast to getwork clients
-            job = Job.build_from_broadcast(job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, hashutxoroot,hashstateroot)
+            job = Job.build_from_broadcast(job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime, hashutxoroot, hashstateroot)
             log.info("New job %s for prevhash %s, clean_jobs=%s" % \
                  (job.job_id, utils.format_hash(job.prevhash), clean_jobs))
 
