@@ -30,8 +30,8 @@ except ImportError:
 
 class Job(object):
     def __init__(self):
-        self.utxroot = ''
-        self.stateroot = ''
+        self.hashutxoroot = ''
+        self.hashstateroot = ''
         self.job_id = None
         self.prevhash = ''
         self.coinb1_bin = ''
@@ -45,11 +45,11 @@ class Job(object):
         self.merkle_to_extranonce2 = {} # Relation between merkle_hash and extranonce2
 
     @classmethod
-    def build_from_broadcast(cls, utxroot, stateroot, job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime):
+    def build_from_broadcast(cls, hashutxoroot, hashstateroot, job_id, prevhash, coinb1, coinb2, merkle_branch, version, nbits, ntime):
         '''Build job object from Stratum server broadcast'''
         job = Job()
-        job.utxroot = "".join(reversed([utxroot[i:i+8] for i in range(0, len(utxroot), 8)]))
-        job.stateroot = "".join(reversed([stateroot[i:i+8] for i in range(0, len(stateroot), 8)]))
+        job.hashutxoroot = "".join(reversed([hashutxoroot[i:i+8] for i in range(0, len(hashutxoroot), 8)]))
+        job.hashstateroot = "".join(reversed([hashstateroot[i:i+8] for i in range(0, len(hashstateroot), 8)]))
         job.job_id = job_id
         job.prevhash = prevhash
         job.coinb1_bin = binascii.unhexlify(coinb1)
@@ -81,8 +81,8 @@ class Job(object):
         r += self.nbits
         r += binascii.hexlify(struct.pack(">I", nonce))
 #        r += '000000800000000000000000000000000000000000000000000000000000000000000000000000000000000080020000' # padding    
-        r += self.utxroot
-        r += self.stateroot
+        r += self.hashutxoroot
+        r += self.haahstateroot
         return r            
         
 class JobRegistry(object):   
